@@ -26,9 +26,9 @@ class Field:
                 else:
                     self.__cells[coord].reset()
         
-    def get_new_generation(self):
+    def new_generation(self):
         self.__next_step()
         return self.__cells.keys()
 
-    def get_current_generation(self):
+    def current_generation(self):
         return self.__cells.keys()
