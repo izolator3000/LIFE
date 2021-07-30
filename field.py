@@ -5,7 +5,7 @@ class Field:
     def __init__(self, alive_cells_coords):
         self.__cells = {elem: Cell() for elem in alive_cells_coords}
 
-    def new_generation(self):
+    def __next_step(self):
         for coord in list(self.__cells.keys()):
             for coord in coord.neighbors():
                 try:
@@ -25,4 +25,10 @@ class Field:
                     del self.__cells[coord]
                 else:
                     self.__cells[coord].reset()
+        
+    def get_new_generation(self):
+        self.__next_step()
+        return self.__cells.keys()
+
+    def get_current_generation(self):
         return self.__cells.keys()
