@@ -5,7 +5,7 @@ from random import randint, randrange
 WIDTH, HEIGHT = 800, 800
 FPS = 10    # Generation change rate
 WHITE = 255, 255, 255   # Colors in RGB
-GREEN = 0, 255, 0
+GREEN = 0, 155, 0
 BLACK = 0, 0, 0
 BLUE = 0, 0, 255
 RED = 255, 0, 0
