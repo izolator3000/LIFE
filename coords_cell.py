@@ -10,7 +10,7 @@ class Coords:
         return self.x == other.x and self.y == other.y
 
     def __repr__(self):
-        return f"({self.x=}, {self.y=})"
+        return f"(x={self.x}, y={self.y})"
 
     def neighbors(self):
         return (Coords(self.x + i, self.y + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not i == j == 0)
