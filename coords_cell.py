@@ -1,4 +1,4 @@
-class Coords:
+class Pair:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -10,7 +10,12 @@ class Coords:
         return self.x == other.x and self.y == other.y
 
     def __repr__(self):
-        return f"(x={self.x}, y={self.y})"
+        return f"({str(self.x)}, {str(self.y)})"
+
+
+class Coords(Pair):
+    def __init__(self, x, y):
+        super(Coords, self).__init__(x, y)
 
     def neighbors(self):
         return (Coords(self.x + i, self.y + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not i == j == 0)
@@ -22,7 +27,7 @@ class Cell:
         self.number_of_neighbors = number_of_neighbors
 
     def __repr__(self):
-        return f"({self.is_alive=}, {self.number_of_neighbors=})"
+        return f"({self.is_alive}, {self.number_of_neighbors})"
 
     def add_neighbor(self):
         self.number_of_neighbors += 1
