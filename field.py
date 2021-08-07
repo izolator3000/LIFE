@@ -7,11 +7,11 @@ class Field:
 
     def new_generation(self):
         for coord in list(self.__cells.keys()):
-            for coord in coord.neighbors():
+            for neighbor in coord.neighbors():
                 try:
-                    self.__cells[coord].number_of_neighbors += 1
+                    self.__cells[neighbor].number_of_neighbors += 1
                 except:
-                    self.__cells[coord] = Cell(False, 1)
+                    self.__cells[neighbor] = Cell(False, 1)
 
         for coord in list(self.__cells.keys()):
             current_cell = self.__cells[coord]

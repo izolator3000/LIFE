@@ -18,6 +18,7 @@ class Coords(Pair):
         super(Coords, self).__init__(x, y)
 
     def neighbors(self):
+        """Generates 8 coordinates of neighbors around self"""
         return (Coords(self.x + i, self.y + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not i == j == 0)
 
 
