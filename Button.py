@@ -33,6 +33,7 @@ class Button:
                self.__start.y < position.y < self.__start.y + self.__size.y
 
     def update(self, data: tuple):
+        # data = (event, Coords(x,y))
         position = data[1]
 
         if data[0] == MouseEvents.KEY_PRESSED:
