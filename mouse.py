@@ -16,25 +16,28 @@ class Mouse:
         self.subscribers = set()
 
     def subscribe(self, widget, mouse_event):
-        self.subscribers.add(Pair(widget, mouse_event))
+        for event in mouse_event:
+            self.subscribers.add(Pair(widget, event))
 
     def unsubscribe(self, widget, mouse_event):
         self.subscribers.remove(Pair(widget, mouse_event))
 
-    def update(self, subscriber):
-        if pg.mouse.get_focused():
-            self._notify(MouseEvents.FOCUS_GET, Coords(*pg.mouse.get_pos()))
-            for event in pg.event.get():
-                if event.type == pg.MOUSEBUTTONDOWN:  #
-                    self._notify(MouseEvents.KEY_PRESSED, Coords(*event.__dict__["pos"]))
-                elif event.type == pg.MOUSEBUTTONUP:
-                    self._notify(MouseEvents.KEY_REALISED, Coords(*event.__dict__["pos"]))
-                elif event.type == pg.MOUSEMOTION:
-                    self._notify(MouseEvents.POSITION_CHANGED, Coords(*event.__dict__["pos"]))
-        else:
-            self._notify(MouseEvents.FOCUS_REALISED, Coords(*pg.mouse.get_pos()))
+    def update(self, event_queue):  # спорно
+        for event in event_queue:
+            if event.type == pg.ACTIVEEVENT:
+                if not event.gain:
+                    self._notify(MouseEvents.FOCUS_REALISED, Coords(-1, -1))
+                else:
+                    self._notify(MouseEvents.FOCUS_GET, Coords(-1, -1))
+            if event.type == pg.MOUSEBUTTONDOWN:
+                self._notify(MouseEvents.KEY_PRESSED, Coords(*event.pos))
+            if event.type == pg.MOUSEBUTTONUP:
+                self._notify(MouseEvents.KEY_REALISED, Coords(*event.pos))
+            if event.type == pg.MOUSEMOTION:
+                self._notify(MouseEvents.POSITION_CHANGED, Coords(*event.pos))
 
     def _notify(self, mouse_event: MouseEvents, position: Coords):
+        data = (mouse_event, position)
         for subscriber in self.subscribers:
             if subscriber.y == mouse_event:
-                subscriber.update(position)
+                subscriber.x.update(data)
