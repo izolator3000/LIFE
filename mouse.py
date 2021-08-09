@@ -7,12 +7,12 @@ class MouseEvents(Enum):
     KEY_PRESSED = 1
     KEY_REALISED = 2
     POSITION_CHANGED = 3
-    FOCUS_CHANGED = 4
+    FOCUS_GET = 4
+    FOCUS_REALISED = 5
 
 
 class Mouse:
     def __init__(self):
-        self.mouse_events = MouseEvents
         self.subscribers = set()
 
     def subscribe(self, widget, mouse_event):
@@ -23,12 +23,19 @@ class Mouse:
     
     def update(self, subscriber):
         if pg.mouse.get_focused():
+            self.notify(MouseEvents.FOCUS_GET, Coords(*pg.mouse.get_pos()))
             for event in pg.event.get():
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    subscriber.update(self.mouse_events.KEY_PRESSED, Coords(*pg.mouse.get_pos()))
+                if event.type == pg.MOUSEBUTTONDOWN:    #
+                    self.notify(MouseEvents.KEY_PRESSED, Coords(*event.__dict__["pos"]))
                 elif event.type == pg.MOUSEBUTTONUP:
-                    subscriber.update(self.mouse_events.KEY_REALISED, Coords(*pg.mouse.get_pos()))
+                    self.notify(MouseEvents.KEY_REALISED, Coords(*event.__dict__["pos"]))
                 elif event.type == pg.MOUSEMOTION:
-                    subscriber.update(self.mouse_events.POSITION_CHANGED, Coords(*pg.mouse.get_pos()))
+                    self.notify(MouseEvents.POSITION_CHANGED, Coords(*event.__dict__["pos"]))
         else:
-            subscriber.update(self.mouse_events.FOCUS_CHANGED, Coords(*pg.mouse.get_pos()))
+            self.notify(MouseEvents.FOCUS_REALISED, Coords(*pg.mouse.get_pos()))
+
+    def notify(self, mouse_event: MouseEvents, position: Coords):
+        for subscriber in self.subscribers:
+            if subscriber.y == mouse_event:
+                subscriber.update(position)
+
