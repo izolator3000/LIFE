@@ -1,13 +1,13 @@
-from coords_cell import Cell
+from coords_cell import Cell, Coords
 
 
 class Field:
-    def __init__(self, alive_cells_coords):
-        self.__cells = {elem: Cell() for elem in alive_cells_coords}
+    def __init__(self):
+        self.__cells = {}  # ключи-координаты,значения-клетки
 
     def new_generation(self):
         for coord in list(self.__cells.keys()):
-            for coord in coord.neighbors():
+            for coord in coord.neighbors():  # ???
                 try:
                     self.__cells[coord].number_of_neighbors += 1
                 except:
@@ -26,6 +26,15 @@ class Field:
                 else:
                     self.__cells[coord].reset()
         return self.__cells.keys()
+
+    def add_alive_cell(self, coords: Coords):
+        self.__cells[coords] = Cell()
+
+    def del_alive_cell(self, coords: Coords):
+        try:
+            del self.__cells[coords]  # добавить пользовательское исключение
+        except:
+            pass
 
     def current_generation(self):
         return self.__cells.keys()
