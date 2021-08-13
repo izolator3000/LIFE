@@ -89,30 +89,23 @@ class Screen(Component, Subscriber):
             if event == MouseEvents.POSITION_CHANGED:
                 return position
 
-    def _get_abstract_coords(self, coords):
-
-        res = Coords()
-        res.x = (coords.x - (self._start.x + self._width // 2) - int(self._offset.x)) // self._cell_size
-        res.y = (self._start.y + self._height // 2 - coords.y - int(self._offset.y)) // self._cell_size + 1
-        return res
+    def _get_abstract_coords(self, coords) -> Coords:
+        x = (coords.x - (self._start.x + self._width // 2) - int(self._offset.x)) // self._cell_size
+        y = (self._start.y + self._height // 2 - coords.y - int(self._offset.y)) // self._cell_size + 1
+        return Coords(x, y)
 
     def _set_new_cells(self, build_start_coords):
-
         if build_start_coords is None:
             return
         new_coord = self._get_abstract_coords(build_start_coords)
         if self._prev_coord == Coords(-1, -1):
             new_coords = [new_coord]
-
         else:
             new_coords = Coords.get_coords_on_line(new_coord, self._prev_coord)
-
         for elem in new_coords:
             if self._build_mode.y == 1:
-
                 self._field.add_alive_cell(elem)
             else:
-
                 self._field.del_alive_cell(elem)
 
         self._prev_coord = new_coord
@@ -198,3 +191,7 @@ class Screen(Component, Subscriber):
         self._offset.x += distance * self._cursor_status.y.x
         self._offset.y += distance * self._cursor_status.y.y
         self._cells_changed = True
+
+    def reset(self):
+        self._cells_changed = True
+        self._field.clear()

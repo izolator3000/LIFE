@@ -11,21 +11,31 @@ running = True
 controller = Mouse()
 
 screen = Screen(Coords(600, 0), 600, 600, 10)
-pause_botton = Button(text=("play", "pause"))
-controller.subscribe(pause_botton,
+pause_button = Button(text=("play", "pause"))
+clear_button = Button(start=Coords(50, 250), size=Pair(100, 50), text=("Clear", "Clear"), pressed_color=(255, 0, 0, 100),
+                 unpressed_color=(255, 255, 255, 255), font_size=15, font_color=(0, 0, 0, 255))
+controller.subscribe(pause_button,
+                     (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED, MouseEvents.FOCUS_REALISED))
+controller.subscribe(clear_button,
                      (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED, MouseEvents.FOCUS_REALISED))
 
 controller.subscribe(screen,
                      (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.RIGHT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED,
                       MouseEvents.RIGHT_KEY_REALISED, MouseEvents.FOCUS_REALISED, MouseEvents.FOCUS_GET,
                       MouseEvents.POSITION_CHANGED))
-LIFE_controller = VidgetMediator(pause_botton, screen)
+LIFE_controller = VidgetMediator(pause_button, clear_button, screen)
 
 while running:
     events = pygame.event.get()
+    if any(map(lambda x: x.type == pygame.QUIT, events)):
+        running = False
     controller.update(events)
 
     display.fill((0, 255, 0))
-    pause_botton.draw(display)
+    pause_button.draw(display)
+    clear_button.draw(display)
     screen.draw(display)
     pygame.display.flip()
+
+pygame.quit()
+quit()
