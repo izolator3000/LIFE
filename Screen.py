@@ -34,11 +34,10 @@ class Screen(Component, Subscriber):
         self._speed = 0.3
 
     def _cursor_on_screen(self, position):
-        if position.x < self._start.x or position.x > self._start.x + self._width:
-            self._cursor_status = Pair(False, Pair(0, 0))
-            return False
-
-        if position.y < self._start.y or position.y > self._start.y + self._height:
+        if position.x < self._start.x or \
+                position.x > self._start.x + self._width or \
+                position.y < self._start.y or \
+                position.y > self._start.y + self._height:
             self._cursor_status = Pair(False, Pair(0, 0))
             return False
         return True

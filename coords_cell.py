@@ -27,7 +27,6 @@ class Coords(Pair):
         return (Coords(self.x + i, self.y + j) for i in (-1, 0, 1) for j in (-1, 0, 1) if not i == j == 0)
 
     def get_coords_on_line(start, finish):
-
         res = [start]
         if start == finish:
             return res
@@ -44,13 +43,10 @@ class Coords(Pair):
             if counters.x >= step:
                 counters.x = counters.x - step
                 current_position.x += coefficents.x
-
             if counters.y >= step:
                 counters.y = counters.y - step
                 current_position.y += coefficents.y
-
             res.append(Coords(current_position.x, current_position.y))
-
         return res
 
     def _check_intersection(first_start, first_finish, second_start, second_finish):

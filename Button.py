@@ -30,6 +30,7 @@ class Button(Component, Subscriber):
         self._font_color = font_color
         self._state = 0
 
+
     def _cursor_on_button(self, position):
         if position.x < self._start.x or position.x > self._start.x + self._size.x:
             return False
@@ -80,5 +81,4 @@ class Button(Component, Subscriber):
         screen.blit(text_image, (text_position.x, text_position.y))
 
     def click(self):
-
         self.mediator.notify(self)

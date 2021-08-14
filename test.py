@@ -7,13 +7,15 @@ from Screen import Screen
 
 pygame.init()
 display = pygame.display.set_mode((1200, 600))
+pygame.display.set_caption("LIFE")
 running = True
 controller = Mouse()
 
-screen = Screen(Coords(600, 0), 600, 600, 10)
+screen = Screen(Coords(300, 0), 900, 600, 10)
 pause_button = Button(text=("play", "pause"))
-clear_button = Button(start=Coords(50, 250), size=Pair(100, 50), text=("Clear", "Clear"), pressed_color=(255, 0, 0, 100),
-                 unpressed_color=(255, 255, 255, 255), font_size=15, font_color=(0, 0, 0, 255))
+clear_button = Button(start=Coords(50, 250), size=Pair(100, 50), text=("Clear", "Clear"),
+                      pressed_color=(255, 0, 0, 100),
+                      unpressed_color=(255, 255, 255, 255), font_size=15, font_color=(0, 0, 0, 255))
 controller.subscribe(pause_button,
                      (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED, MouseEvents.FOCUS_REALISED))
 controller.subscribe(clear_button,
