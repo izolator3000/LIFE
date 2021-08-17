@@ -132,7 +132,7 @@ class Screen(Component, Subscriber):
         if self._generation_timer > self._generation_speed:
             self._generation_timer = 0
             self._cells_changed = True
-            return self._field.new_generation()
+            return self._field.next_generation()
         if self._cells_changed:
             return self._field.current_generation()
 
@@ -194,3 +194,6 @@ class Screen(Component, Subscriber):
     def reset(self):
         self._cells_changed = True
         self._field.clear()
+
+    def reverse_game(self):
+        self._field.reverse_game()

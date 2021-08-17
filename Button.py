@@ -65,8 +65,8 @@ class Button(Component, Subscriber):
 
     def _calculate_text_position(self):
         text_size = self._font.size(self._text[self._text_index])
-        offset_x = int((self._size.x - text_size[0]) / 2)
-        offset_y = int((self._size.y - text_size[1]) / 2)
+        offset_x = (self._size.x - text_size[0]) // 2
+        offset_y = (self._size.y - text_size[1]) // 2
         return Coords(self._start.x + offset_x, self._start.y + offset_y)
 
     def draw(self, screen: pygame.Surface):
