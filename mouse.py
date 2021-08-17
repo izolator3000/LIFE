@@ -1,16 +1,21 @@
+import sys
 from enum import Enum
+
+import pygame
 import pygame as pg
 from coords_cell import Coords, Pair
 
 
 class MouseEvents(Enum):
     LEFT_KEY_PRESSED = 1
-    LEFT_KEY_REALISED = 2
     RIGHT_KEY_PRESSED = 3
-    RIGHT_KEY_REALISED = 4
-    POSITION_CHANGED = 5
-    FOCUS_GET = 6
+    WHEEL_MOVED_FORWARD = 4
+    WHEEL_MOVED_BACKWARD = 5
+    FOCUS_GET = 10
     FOCUS_REALISED = 7
+    LEFT_KEY_REALISED = 6
+    RIGHT_KEY_REALISED = 8
+    POSITION_CHANGED = 9
 
 
 class Mouse:
@@ -26,6 +31,9 @@ class Mouse:
 
     def update(self, event_queue):  # спорно
         for event in event_queue:
+            if event.type == pygame.QUIT:
+                sys.exit()
+
             if event.type == pg.ACTIVEEVENT:
                 coords = Coords(*pg.mouse.get_pos())
                 if not event.gain:
@@ -33,9 +41,11 @@ class Mouse:
                 else:
                     self._notify(MouseEvents.FOCUS_GET, coords)
             if event.type == pg.MOUSEBUTTONDOWN:
-                self._notify(MouseEvents(event.button), Coords(*event.pos))
+                if event.button < 6:
+                    self._notify(MouseEvents(event.button), Coords(*event.pos))
             if event.type == pg.MOUSEBUTTONUP:
-                self._notify(MouseEvents(event.button + 1), Coords(*event.pos))
+                if event.button < 4:
+                    self._notify(MouseEvents(event.button + 5), Coords(*event.pos))
             if event.type == pg.MOUSEMOTION:
                 self._notify(MouseEvents.POSITION_CHANGED, Coords(*event.pos))
 

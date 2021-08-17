@@ -10,7 +10,7 @@ display = pygame.display.set_mode((1200, 600))
 running = True
 controller = Mouse()
 
-screen = Screen(Coords(600, 0), 600, 600, 10)
+screen = Screen(Coords(600, 0), 600, 600, 16)
 pause_botton = Button(text=("play", "pause"))
 controller.subscribe(pause_botton,
                      (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED, MouseEvents.FOCUS_REALISED))
@@ -18,7 +18,7 @@ controller.subscribe(pause_botton,
 controller.subscribe(screen,
                      (MouseEvents.LEFT_KEY_PRESSED, MouseEvents.RIGHT_KEY_PRESSED, MouseEvents.LEFT_KEY_REALISED,
                       MouseEvents.RIGHT_KEY_REALISED, MouseEvents.FOCUS_REALISED, MouseEvents.FOCUS_GET,
-                      MouseEvents.POSITION_CHANGED))
+                      MouseEvents.POSITION_CHANGED,MouseEvents.WHEEL_MOVED_FORWARD,MouseEvents.WHEEL_MOVED_BACKWARD))
 LIFE_controller = VidgetMediator(pause_botton, screen)
 
 while running:
