@@ -43,9 +43,7 @@ class Field:
         self.__cells = {}
 
     def remember_current_generation(self):
-        print("Here")
         self._start_generation = self.__cells.copy()
 
     def set_start_generation(self):
         self.__cells = self._start_generation.copy()
-        print("Here")
