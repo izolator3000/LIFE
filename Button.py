@@ -10,7 +10,8 @@ import pygame
 
 class Button(Component, Subscriber):
     def __init__(self, start=Coords(50, 50), size=Pair(100, 50), text=("Button"), pressed_color=(255, 0, 0, 100),
-                 unpressed_color=(255, 255, 255, 255), font_size=15, font_color=(0, 0, 0, 255)):
+                 unpressed_color=(255, 255, 255, 255), font_size=15, font_color=(0, 0, 0, 255), turned_on=True,
+                 turned_off_font_color=(120, 120, 120)):
 
         super().__init__()
         if not pygame.font.get_init():
@@ -29,6 +30,8 @@ class Button(Component, Subscriber):
         self._unpressed_color = unpressed_color
         self._font_color = font_color
         self._state = 0
+        self._turned_on = turned_on
+        self._turned_off_font_color = turned_off_font_color
 
     def _cursor_on_button(self, position):
         if position.x < self._start.x or position.x > self._start.x + self._size.x:
@@ -37,13 +40,14 @@ class Button(Component, Subscriber):
             return False
         return True
 
-    def turn_off(self):
-        pass
+    def change_mode(self):
+        self._turned_on = not self._turned_on
+        if not self._turned_on:
+            self._state = 0
 
-    def turn_on(self):
-        pass
-
-    def update(self, data: tuple): #левая кнопка мыши нажата/отпущена,фокус потерян
+    def update(self, data: tuple):  # левая кнопка мыши нажата/отпущена,фокус потерян
+        if not self._turned_on:
+            return
         if data[0] == MouseEvents.FOCUS_REALISED:
             self._state = 0
             return
@@ -73,8 +77,14 @@ class Button(Component, Subscriber):
             active_color = self._unpressed_color
         else:
             active_color = self._pressed_color
+
+        if self._turned_on:
+            active_font_color = self._font_color
+        else:
+            active_font_color = self._turned_off_font_color
+
         button_rect = pygame.Rect(self._start.x, self._start.y, self._size.x, self._size.y)
-        text_image = self._font.render(self._text[self._text_index], True, self._font_color)
+        text_image = self._font.render(self._text[self._text_index], True, active_font_color)
         text_position = self._calculate_text_position()
         pygame.draw.rect(screen, active_color, button_rect, 0)
         screen.blit(text_image, (text_position.x, text_position.y))

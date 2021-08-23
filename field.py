@@ -38,3 +38,14 @@ class Field:
 
     def current_generation(self):
         return self.__cells.keys()
+
+    def clear_cells(self):
+        self.__cells = {}
+
+    def remember_current_generation(self):
+        print("Here")
+        self._start_generation = self.__cells.copy()
+
+    def set_start_generation(self):
+        self.__cells = self._start_generation.copy()
+        print("Here")
